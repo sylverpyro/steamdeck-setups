@@ -6,7 +6,7 @@
 * Brave
 * Moonlight Client
 ```
-flatpak install -y com.brave.Browser com.heroicgameslauncher.hgl com.moonlight_stream.Moonlight
+flatpak install -y com.brave.Browser com.heroicgameslauncher.hgl com.moonlight_stream.Moonlight com.github.mtkennerly.ludusavi
 ```
 
 # Set a sudo password
