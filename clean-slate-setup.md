@@ -35,6 +35,7 @@ mv steamapps SteamLibrary/
 Then restart Steam to force it to scan the new library folder
   
 # Fix MTU probing for Ubisoft Connect
+https://github.com/ValveSoftware/Proton/issues/6260
 ```
 sudo sysctl -w net.ipv4.tcp_mtu_probing=1
 echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/zzz-custom-mtu-probing.conf
