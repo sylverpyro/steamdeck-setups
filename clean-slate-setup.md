@@ -3,24 +3,32 @@
 
 # Install Flatpacks
 * Heroic
+* Lutris
 * Brave
 * Moonlight Client
+* Ludusavi
 ```
-flatpak install -y com.brave.Browser com.heroicgameslauncher.hgl com.moonlight_stream.Moonlight com.github.mtkennerly.ludusavi
+flatpak install -y com.brave.Browser com.heroicgameslauncher.hgl com.moonlight_stream.Moonlight com.github.mtkennerly.ludusavi net.lutris.Lutris
 ```
 
 # Set a sudo password
 * `passwd`
 
 # Get and run coreutils
-* `curl -L https://raw.githubusercontent.com/CryoByte33/steam-deck-utilities/main/InstallCryoUtilities.desktop | sh`
+```
+curl -L https://raw.githubusercontent.com/CryoByte33/steam-deck-utilities/main/InstallCryoUtilities.desktop | sh
+```
 * Don't forget to reboot and set VRAM to 4GB
 
 # Get decky plugin manager
-* `curl -L https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/install_release.sh | sh`
+```
+curl -L https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/install_release.sh | sh
+```
 
 # Get Emudeck
-* `curl -L https://www.emudeck.com/EmuDeck.desktop | sh`
+```
+curl -L https://www.emudeck.com/EmuDeck.desktop | sh
+```
 
 # Add your SD card to Steam
 * In Desktop mode, add a new Steam Library
@@ -35,7 +43,8 @@ mv steamapps SteamLibrary/
 Then restart Steam to force it to scan the new library folder
   
 # Fix MTU probing for Ubisoft Connect
-https://github.com/ValveSoftware/Proton/issues/6260
+* This fixes problems where the Ubisoft Connect client and games cannot reach the Ubisoft Servers
+* https://github.com/ValveSoftware/Proton/issues/6260
 ```
 sudo sysctl -w net.ipv4.tcp_mtu_probing=1
 echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/zzz-custom-mtu-probing.conf
