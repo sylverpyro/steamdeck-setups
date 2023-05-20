@@ -19,7 +19,7 @@ passwd
 
 # Get and run coreutils
 ```
-curl -L https://raw.githubusercontent.com/CryoByte33/steam-deck-utilities/main/InstallCryoUtilities.desktop | sh
+curl https://raw.githubusercontent.com/CryoByte33/steam-deck-utilities/main/install.sh | bash -s --
 ```
 * Don't forget to reboot and set VRAM to 4GB after everything is done
 
@@ -30,7 +30,7 @@ curl -L https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/dow
 
 # Get Emudeck
 ```
-curl -L https://www.emudeck.com/EmuDeck.desktop | sh
+curl -L https://raw.githubusercontent.com/dragoonDorise/EmuDeck/main/install.sh | bash
 ```
 
 # Add your SD card to Steam
