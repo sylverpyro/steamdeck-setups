@@ -4,9 +4,9 @@ flatpak install com.github.mtkennerly.ludusavi
 ```
 
 # Get the latest rclone
-rclone unfortunaltely has choses to not release a flatpak as 'there are no security advantages' over the portable install of the client
-* https://forum.rclone.org/t/flatpak-support/25207
-So we have to install it manually
+rclone unfortunaltely has chosen to not release a flatpak as 'there are no security advantages' over the portable install of the client  
+* https://forum.rclone.org/t/flatpak-support/25207  
+So we have to install it manually  
 ```
 test -d ~/bin || mkdir ~/bin
 cd ~/tmp
