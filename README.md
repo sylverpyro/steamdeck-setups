@@ -7,4 +7,4 @@ It includes third party launchers, emulators, plugin manager, moonlight, and sav
 * First things to do post full-system-wipe, or having just gotten your brand new deck
   * https://github.com/sylverpyro/steamdeck-setups/blob/main/clean-slate-setup.md
 * NEW: Ludusavi Cloud Save setup
-  * https://github.com/sylverpyro/steamdeck-setups/blob/main/steam-deck-ludusavi-cloud-saves
+  * https://github.com/sylverpyro/steamdeck-setups/blob/main/steam-deck-ludusavi-cloud-saves.md
