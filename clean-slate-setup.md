@@ -2,11 +2,11 @@
 * Windows: https://media.steampowered.com/steamlink/windows/latest/SteamLink.zip
 
 # Install Flatpacks
-* Heroic (works greate when it's not broken for EGL and GOG)
-* Lutris (works for everything Heroic does not)
+* Heroic (works well... when it's not broken... for EGL and GOG)
+* Lutris (works for everything Heroic does not, including EGL and GOG)
 * Brave  (personal browser preference)
 * Moonlight Client (Better streaming client than RemotePlay)
-* Ludusavi (Save backup manager)
+* Ludusavi (Save AND CLOUD SAVE backup manager)
 ```
 flatpak install -y com.brave.Browser com.heroicgameslauncher.hgl com.moonlight_stream.Moonlight com.github.mtkennerly.ludusavi net.lutris.Lutris
 ```
