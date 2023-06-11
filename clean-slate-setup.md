@@ -57,7 +57,9 @@ echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/zzz-custom-mtu-probing.
 # Get any and all the extra game launchers
 Thankfully moraroy@github has created a very nice non-steam-launcher installer tool just for this.  
 
-Run this and click the desktop icon
+Run this and click the desktop icon  
+**NOTES**
+* Humble App requires Firefox in order to authenticate properly (Brave has a bug with xdg-open)
 ```
 curl --output ~/Desktop/NonSteamLaunchers.desktop -Ls https://github.com/cchrkk/NSLOSD-DL/releases/download/DlLinkFix/NonSteamLaunchers.desktop
 ```
