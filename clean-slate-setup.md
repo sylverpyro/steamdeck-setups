@@ -53,3 +53,11 @@ This fixes problems where the Ubisoft Connect client and games cannot reach the 
 sudo sysctl -w net.ipv4.tcp_mtu_probing=1
 echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/zzz-custom-mtu-probing.conf
 ```
+
+# Get any and all the extra game launchers
+Thankfully moraroy@github has created a very nice non-steam-launcher installer tool just for this.  
+
+Run this and click the desktop icon
+```
+curl --output ~/Desktop/NonSteamLaunchers.desktop -Ls https://github.com/cchrkk/NSLOSD-DL/releases/download/DlLinkFix/NonSteamLaunchers.desktop
+```
