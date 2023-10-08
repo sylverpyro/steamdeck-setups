@@ -21,7 +21,6 @@ passwd
 ```
 curl https://raw.githubusercontent.com/CryoByte33/steam-deck-utilities/main/install.sh | bash -s --
 ```
-* Don't forget to reboot and set VRAM to 4GB after everything is done
 
 # Get decky plugin manager
 ```
@@ -62,4 +61,45 @@ Run this and click the desktop icon
 * Humble App requires Firefox in order to authenticate properly (Brave has a bug with xdg-open)
 ```
 curl --output ~/Desktop/NonSteamLaunchers.desktop -Ls https://github.com/cchrkk/NSLOSD-DL/releases/download/DlLinkFix/NonSteamLaunchers.desktop
+```
+
+# Set some performance tweaks
+NOTE: I only apply some of the tweaks this author recommends.  I omit 
+* Silencing the Watchdog timer
+* Disabling CPU vulnrability mitigations (i.e. retbleed)
+Source: https://medium.com/@a.b.t./here-are-some-possibly-useful-tweaks-for-steamos-on-the-steam-deck-fcb6b571b577#6c57
+```
+# Performance CPU govenor (SteamDeck default: schedutil)
+cat << EOF | sudo tee /etc/systemd/system/cpu_performance.service
+[Unit]
+Description=CPU performance governor
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/cpupower frequency-set -g performance
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable cpu_performance.service
+
+# MGLRU memory management (will be default in some future Linux kernel release)
+cat << EOF | sudo tee /etc/tmpfiles.d/mglru.conf
+w /sys/kernel/mm/lru_gen/enabled - - - - 7
+w /sys/kernel/mm/lru_gen/min_ttl_ms - - - - 0
+EOF
+
+# Increase the request limit for memory to 2GB (default: 64k)
+cat << EOF | sudo tee /etc/security/limits.d/memlock.conf
+* hard memlock 2147484
+* soft memlock 2147484
+EOF
+
+# Set I/O Scheduler to Kyber (default: mq-deadline)
+cat << EOF | sudo tee /etc/udev/rules.d/64-ioschedulers.rules
+ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="kyber"
+ACTION=="add|change", KERNEL=="sd[a-z]|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"
+EOF
+
+# Remove setting 'atime' (defulat: atime) (note: could use relatime)
+sudo sed -i -e '/home/s/\bdefaults\b/&,noatime/' /etc/fstab
 ```
