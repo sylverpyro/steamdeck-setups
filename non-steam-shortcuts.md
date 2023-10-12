@@ -67,6 +67,11 @@ Steam Shortcut (SteamOS) For Hades:
    * Launch Options: `STEAM_COMP_DATA="/home/deck/.local/Steam/steamapps/comptadata/EpicGamesLauncher" %command% -com.epicgames.launcher://apps/min%3Afb39bac8278a4126989f0fe12e7353af%3AMin?action=launch&silent=true`
 
 ## Uplay/Ubisoft Connect
+NOTES:
+* The %command% to launch a game will exit immediately but will still launch the game
+* Needs to be tested if it works as intended on SteamDeck
+* Ubisot Connect will not work without OS settings to allow MTU probing (see other readme)
+
 List of UPlay app IDs: https://github.com/Haoose/UPLAY_GAME_ID  
 Launch command: `"C:\Program Files (x86)\Ubisoft\Ubisoft Game Launcher\Uplay.exe" "uplay://launch/410/0"  `
 Installed List: `C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\data  `
@@ -101,7 +106,17 @@ Installed List:
 
 
 ## EA App
-Installed Game IDs: `C:\ProgramData\Origin\LocalContent\*.mfst`
+NOTES: 
+* Games appear to have launching the EA App baked into their EXE files so there's not much custom to do there
+
+Windows Shortcut (Peggle): 
+* Target: `"C:\Program Files\EA Games\Peggle Deluxe\Peggle.exe"`
+* Start In: `C:\Program Files\EA Games\Peggle Deluxe\`
+
+Installed Game IDs:
+* Old origin path `C:\ProgramData\Origin\LocalContent\*.mfst`
+* New EA path `C:\ProgramData\EA Desktop\InstallData\GAME`
+  * Each GAME folder has a sub folder with the game ID in the title of the folder
 mfst content example
 ```
 ?activerepair=0&autoresume=0&autostart=0&buildid=&contentversion=1&currentstate=kReadyToStart&ddinitialdownload=0&ddinstallalreadycompleted=0&dipInstallPath=&dipinstallpath=C%3a%5cGames%5cOrigin%5cCommand%20and%20Conquer%20Generals%20Zero%20Hour&downloaderversion=9.0.0.0&downloading=0&dynamicdownload=0&eula____installer_directx_eula_en_us_txt=2103371362&eula____installer_vc_vc2005sp1_eula_en_us_txt=602589686&eula____installer_vc_vc2010sp1_eula_en_us_rtf=774049465&eula__support_eula_en_us_eula_rtf=2269322523&eulasaccepted=1&gamemovedto=&id=OFB-EAST%3a52209&installdesktopshortcut=1&installerchanged=0&installstartmenushortcut=1&isitoflow=0&islocalsource=0&ispreload=0&isrepair=0&jobID=&jobid=%7bc1f40d67-c30a-488c-b8f5-cb5f50152aa8%7d&locale=en_US&movegameto=&moveorlocate=&optionalcomponentstoinstall=0&paused=0&previousstate=kCompleted&repairstate=&savedbytes=2290410931&stagedfilecount=0&totalbytes=3209029103&totaldownloadbytes=2290410931
