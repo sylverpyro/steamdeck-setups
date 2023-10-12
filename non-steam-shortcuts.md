@@ -48,12 +48,12 @@ Disable Overlay
    * `C:\Program Files (x86)\Epic Games\Launcher\Portal\Extras\Overlay\EOSOverlayRenderer-Win64-Shipping.exe`
    * `C:\Program Files (x86)\Epic Games\Launcher\Portal\Extras\Overlay\EOSOverlayRenderer-Win32-Shipping.exe`
 
-Steam Shortcut (Windows):
+Steam Shortcut (Windows) For Hades:
    * Target: `"C:\Program Files (x86)\Epic Games\Launcher\Portal\Binaries\Win32\EpicGamesLauncher.exe"`
    * Start In: `"C:\Program Files (x86)\Epic Games\"`
    * Launch Options: `%command% -com.epicgames.launcher://apps/min%3Afb39bac8278a4126989f0fe12e7353af%3AMin?action=launch&silent=true`
 
-Steam Shortcut (SteamOS):
+Steam Shortcut (SteamOS) For Hades:
    * Target: `"/home/deck/.local/Steam/steamapps/comptadata/EpicGamesLauncher/pfx/drive_c/Program Files (x86)\Epic Games\Launcher\Portal\Binaries\Win32\EpicGamesLauncher.exe"`
    * Start In:  `"/home/deck/.local/Steam/steamapps/comptadata/EpicGamesLauncher/pfx/drive_c/Program Files (x86)\Epic Games\"`
    * Launch Options: `STEAM_COMP_DATA="/home/deck/.local/Steam/steamapps/comptadata/EpicGamesLauncher" %command% -com.epicgames.launcher://apps/min%3Afb39bac8278a4126989f0fe12e7353af%3AMin?action=launch&silent=true`
