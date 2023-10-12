@@ -8,6 +8,14 @@
 
 # Resources
 ## Epic Games
+NOTES
+* Even with properly created shortcuts, it's not possible to exit a game and have the EGL close automaticaly
+  * To 'stop' the game in steam you'll need to manually close the EGL
+  * It theoreticaly would be possible to launch the game via a script then close the EGL once the game exits
+* To improve Gamepad supprot it's a good idea to disable the EGL-Overlay by renaming it's binaries
+  * See below for how to do that
+
+
 Windows link example: 
 ```
 com.epicgames.launcher://apps/ff50f85ed609454e80ac46d9496da34d%3A9c7c10e8e1a648f8a9e35f28a1d45900%3Af7a0ebb44f93430fb1c4388a395eba96?action=launch&silent=true
