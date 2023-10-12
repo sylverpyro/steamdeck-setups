@@ -97,12 +97,15 @@ Windows Shortcut (Child of Light):
 * Launch Options: `%command% uplay://launch/609/0`
 
 ## GOG
-Launch Command:  
-* Target : `"C:\Program Files (x86)\GOG Galaxy\GalaxyClient.exe" /command=runGame /gameId=1433856545 /path="C:\GOG Games\Victor Vran"  `
-* Start In : `"C:\Program Files (x86)\GOG Galaxy"  `
+Windows Shortcut:
+* Target : `"C:\Program Files (x86)\GOG Galaxy\GalaxyClient.exe"`
+* Start In : `"C:\Program Files (x86)\GOG Galaxy\"`
+* Launch Options : `%command% /command=runGame /gameId=1237807960 /path="C:\Program Files (x86)\GOG Galaxy\Games\Dead Cells"`
 * NOTE: `/command=runGame` (not launch)  
-GameIDs: ? The ico files have the Game ID  
-Installed List:  
+
+GameIDs: `C:\Program Files (x86)\GOG Galaxy\Games\GAME\goggame-GAMEID.ico`
+* Can Extract GAME from path, GameID from the .ico file name
+Installed Directory:  `C:\Program Files (x86)\GOG Galaxy\Games\GAME`
 
 
 ## EA App
@@ -114,14 +117,15 @@ Windows Shortcut (Peggle):
 * Start In: `C:\Program Files\EA Games\Peggle Deluxe\`
 
 Installed Game IDs:
-* Old origin path `C:\ProgramData\Origin\LocalContent\*.mfst`
 * New EA path `C:\ProgramData\EA Desktop\InstallData\GAME`
   * Each GAME folder has a sub folder with the game ID in the title of the folder
-mfst content example
+* Old origin path `C:\ProgramData\Origin\LocalContent\*.mfst`
 ```
+# .mfst file contents example
 ?activerepair=0&autoresume=0&autostart=0&buildid=&contentversion=1&currentstate=kReadyToStart&ddinitialdownload=0&ddinstallalreadycompleted=0&dipInstallPath=&dipinstallpath=C%3a%5cGames%5cOrigin%5cCommand%20and%20Conquer%20Generals%20Zero%20Hour&downloaderversion=9.0.0.0&downloading=0&dynamicdownload=0&eula____installer_directx_eula_en_us_txt=2103371362&eula____installer_vc_vc2005sp1_eula_en_us_txt=602589686&eula____installer_vc_vc2010sp1_eula_en_us_rtf=774049465&eula__support_eula_en_us_eula_rtf=2269322523&eulasaccepted=1&gamemovedto=&id=OFB-EAST%3a52209&installdesktopshortcut=1&installerchanged=0&installstartmenushortcut=1&isitoflow=0&islocalsource=0&ispreload=0&isrepair=0&jobID=&jobid=%7bc1f40d67-c30a-488c-b8f5-cb5f50152aa8%7d&locale=en_US&movegameto=&moveorlocate=&optionalcomponentstoinstall=0&paused=0&previousstate=kCompleted&repairstate=&savedbytes=2290410931&stagedfilecount=0&totalbytes=3209029103&totaldownloadbytes=2290410931
-```
+
 Importnat part: `&id=STRING%3ASTRING` == `&id=OFB-EAST%3a52209`
+```
 
 
 ## Amazon Games
