@@ -14,17 +14,49 @@ com.epicgames.launcher://apps/ff50f85ed609454e80ac46d9496da34d%3A9c7c10e8e1a648f
 ```
 Generic: 
 ```
-com.epicgames.launcher://apps/NamespaceId%ItemId%ArtifactId?acton=launch&silent=true
+com.epicgames.launcher://apps/NamespaceId%3AItemId%3AArtifactId?acton=launch&silent=true
+Field Seperator = %3A
 ```
 Loop Hero ID combination: 
 ```
-ff50f85ed609454e80ac46d9496da34d % 3A9c7c10e8e1a648f8a9e35f28a1d45900 % 3Af7a0ebb44f93430fb1c4388a395eba96
+ff50f85ed609454e80ac46d9496da34d %3A 9c7c10e8e1a648f8a9e35f28a1d45900 %3A f7a0ebb44f93430fb1c4388a395eba96
 ```
 Hadies ID combination:  
-Installed App ID List: `C:\ProgramData\Epic\UnrealEngineLauncher\LauncherInstalled.dat` 
-  * Possibly also: `C: \ Program Files \ Epic Games \ "Name of the Game" \.egstore \ MANCPN`
-  * Possibly also: `Epic\\EpicGamesLauncher\\Data\\Manifests`
+```
+min %3A fb39bac8278a4126989f0fe12e7353af %3A Min
+```
+Installed App ID List:
+* `C:\ProgramData\Epic\UnrealEngineLauncher\LauncherInstalled.dat`
+   * InstallLocation == InstallLocation
+   * NamespaceId == NamespaceId
+   * ItemId == ItemId
+   * ArtifactId == ArtifactId
+* Also: `c:\programData\Epic\EpicGamesLauncher\Data\Manifests`
+   * InstallLocation == InstallLocation 
+   * CatalogNamespace == NamespaceID
+   * CatalogItemId == ItemID
+   * AppName == ArtifactID
 
+Individual App IDs: `C:\Program Files\Epic Games\GAME_NAME\.egstore\*.mancpn`
+  * CatalogNamespace == NamespaceID
+  * CatalogItemId == ItemID
+  * AppName == ArtifactID
+
+
+Disable Overlay
+* Rename both:
+   * `C:\Program Files (x86)\Epic Games\Launcher\Portal\Extras\Overlay\EOSOverlayRenderer-Win64-Shipping.exe`
+   * `C:\Program Files (x86)\Epic Games\Launcher\Portal\Extras\Overlay\EOSOverlayRenderer-Win32-Shipping.exe`
+
+Steam Shortcut (Windows):
+   * Target: `"C:\Program Files (x86)\Epic Games\Launcher\Portal\Binaries\Win32\EpicGamesLauncher.exe"`
+   * Start In: `"C:\Program Files (x86)\Epic Games\"`
+   * Launch Options: `%command% -com.epicgames.launcher://apps/min%3Afb39bac8278a4126989f0fe12e7353af%3AMin?action=launch&silent=true`
+
+Steam Shortcut (SteamOS):
+   * Target: `"/home/deck/.local/Steam/steamapps/comptadata/EpicGamesLauncher/pfx/drive_c/Program Files (x86)\Epic Games\Launcher\Portal\Binaries\Win32\EpicGamesLauncher.exe"`
+   * Start In:  `"/home/deck/.local/Steam/steamapps/comptadata/EpicGamesLauncher/pfx/drive_c/Program Files (x86)\Epic Games\"`
+   * Launch Options: `STEAM_COMP_DATA="/home/deck/.local/Steam/steamapps/comptadata/EpicGamesLauncher" %command% -com.epicgames.launcher://apps/min%3Afb39bac8278a4126989f0fe12e7353af%3AMin?action=launch&silent=true`
 
 ## Uplay/Ubisoft Connect
 List of UPlay app IDs: https://github.com/Haoose/UPLAY_GAME_ID  
