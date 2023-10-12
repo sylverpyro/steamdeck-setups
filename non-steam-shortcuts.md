@@ -142,5 +142,7 @@ https://github.com/CorporalQuesadilla/Steam-Shortcut-Manager/wiki/Steam-Shortcut
 # References
 Vortext ModWiki list of locations to detect game installations:
 * https://modding.wiki/en/vortex/developer/game-detection
+Another tinkerer trying to do something similar with just EA App
+* https://github.com/kageurufu/steamdeck-tricks/tree/main
 
 
