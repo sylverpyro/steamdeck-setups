@@ -2,6 +2,7 @@
 1. Document how to manually create shortcuts for Steam to launch games from all major non-steam storefronts using their native launcher for save support
    - Epic, GOG, Ubisoft, EA (App)
 2. Script generation of shortcut fields
+   - https://github.com/sylverpyro/steamdeck-setups/blob/main/nonsteam-game-shortcut-generator.sh
 3. Script addition of shortcuts directly to Steam's shortcuts VDF file
 4. Investiage other launchers/app stores
    - itch.io, Battle.net, Amazon Games
