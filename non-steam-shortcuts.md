@@ -7,7 +7,17 @@
 4. Investiage other launchers/app stores
    - itch.io, Battle.net, Amazon Games
 
-# Resources
+Per-Store Notes and Resources
+* [Epic Games](#epic-games)
+* [Uplay / Ubisoft Connect](#uplayubisoft-connect)
+* [GOG](#gog)
+* [EA App (formerly Origin)](#ea-app)
+* [Amazon Games / Prime Gaming](#amazon-games)
+
+Misc Resources
+* [References](#references)
+
+# Per-Store Resources
 ## Epic Games
 NOTES
 * Even with properly created shortcuts, it's not possible to exit a game and have the EGL close automaticaly
@@ -123,9 +133,10 @@ Windows Shortcut (Peggle):
 * Start In: `C:\Program Files\EA Games\Peggle Deluxe\`
 
 Installed Game IDs:
-* New EA path `C:\ProgramData\EA Desktop\InstallData\GAME`
+NOTE: These are currently not needed, but figured I'd document them
+* New EA path path-based IDs `C:\ProgramData\EA Desktop\InstallData\GAME`
   * Each GAME folder has a sub folder with the game ID in the title of the folder
-* Old origin path `C:\ProgramData\Origin\LocalContent\*.mfst`
+* Old (defunct) Oring manifest files with IDs `C:\ProgramData\Origin\LocalContent\*.mfst`
 ```
 # .mfst file contents example
 ?activerepair=0&autoresume=0&autostart=0&buildid=&contentversion=1&currentstate=kReadyToStart&ddinitialdownload=0&ddinstallalreadycompleted=0&dipInstallPath=&dipinstallpath=C%3a%5cGames%5cOrigin%5cCommand%20and%20Conquer%20Generals%20Zero%20Hour&downloaderversion=9.0.0.0&downloading=0&dynamicdownload=0&eula____installer_directx_eula_en_us_txt=2103371362&eula____installer_vc_vc2005sp1_eula_en_us_txt=602589686&eula____installer_vc_vc2010sp1_eula_en_us_rtf=774049465&eula__support_eula_en_us_eula_rtf=2269322523&eulasaccepted=1&gamemovedto=&id=OFB-EAST%3a52209&installdesktopshortcut=1&installerchanged=0&installstartmenushortcut=1&isitoflow=0&islocalsource=0&ispreload=0&isrepair=0&jobID=&jobid=%7bc1f40d67-c30a-488c-b8f5-cb5f50152aa8%7d&locale=en_US&movegameto=&moveorlocate=&optionalcomponentstoinstall=0&paused=0&previousstate=kCompleted&repairstate=&savedbytes=2290410931&stagedfilecount=0&totalbytes=3209029103&totaldownloadbytes=2290410931
@@ -142,12 +153,14 @@ NOTES:
 Installed List: `%localappdata%\Amazon Games\Data\Games\Sql\GameInstallInfo.sqlit`
 * NOTE: Requires sqlite client to read
 
-# Steam VDF shortcut strcutre
-https://github.com/CorporalQuesadilla/Steam-Shortcut-Manager/wiki/Steam-Shortcuts-Documentation
 
 # References
+Steam VDF shortcut strcutre
+* https://github.com/CorporalQuesadilla/Steam-Shortcut-Manager/wiki/Steam-Shortcuts-Documentation
+
 Vortext ModWiki list of locations to detect game installations:
 * https://modding.wiki/en/vortex/developer/game-detection
+
 Another tinkerer trying to do something similar with just EA App
 * https://github.com/kageurufu/steamdeck-tricks/tree/main
 
