@@ -62,20 +62,24 @@ defaults() {
 
   # Epic Games Launcher paths
   egl_storefront_name="Epic Games Store"
+  # To launch the storefront in the EGL it actualy needs a special launch option
+  egl_storefront_launch_opts='-com.epicgames'
   egl_comp_dir="$compdata_dir/EpicGamesLauncher"
   egl_pfx="$egl_comp_dir/pfx"
   egl_start_dir="$egl_pfx/drive_c/Program Files (x86)/Epic Games"
   egl_exe="$egl_pfx/drive_c/Program Files (x86)/Epic Games/Launcher/Portal/Binaries/Win32/EpicGamesLauncher.exe"
   egl_games_dir="$egl_pfx/drive_c/Program Files/Epic Games"
-  # Single file containing all insalled games, names, and IDs
-  egl_game_index="$egl_pfx/drive_c/ProgramData/Epic/UnrealEngineLauncher/LauncherInstalled.dat"
-  # Alt index sources
-  ## Each .item file contains the information for a single game
-  # egl_game_items="$egl_pfx/drive_c/ProgramData/Epic/EpicGamesLauncher/Data/Manifests/*.item"
-  ## Each directory for each game has a .mancpn file with the required ID data
+  ## Game Info source(s)
+  # Single file containing all insalled games, but does't have the NAMES of the games :(
+  #egl_game_index="$egl_pfx/drive_c/ProgramData/Epic/UnrealEngineLauncher/LauncherInstalled.dat"
+  
+  # Each directory for each game has a .mancpn file with the required ID data
   # egl_game_mancpn="drive_c/Program Files/Epic Games/*/.egstore/*.mancpn"
+  
+  # Installer manifest folder (manifests are *.item files in this folder)
+  # Contains ALL extensive required info for each game
   egl_game_manifests="$egl_pfx/drive_c/ProgramData/Epic/EpicGamesLauncher/Data/Manifests"
-  egl_game_info_dir="$egl_pfx/drive_c/Program Files/Epic Games"
+
   #egl_game_info_ext='.mancpn'
   egl_overlay="$egl_pfx/drive_c/Program Files (x86)/Epic Games/Launcher/Portal/Extras/Overlay/EOSOverlayRenderer-Win32-Shipping.exe"
   egl_overlay_64="$egl_pfx/drive_c/Program Files (x86)/Epic Games/Launcher/Portal/Extras/Overlay/EOSOverlayRenderer-Win64-Shipping.exe"
@@ -124,53 +128,35 @@ generate_egl_data() {
   fi
 
   # Generate the Launcher shortcut
-  generate_shortcut_data "$egl_storefront_name" "$egl_exe" "$egl_start_dir" "$egl_comp_dir" ""
+  generate_shortcut_data "$egl_storefront_name" "$egl_exe" "$egl_start_dir" "$egl_comp_dir" "$egl_storefront_launch_opts"
+
+  echo "Info files: $(find "$egl_game_manifests" -mindepth 1 -maxdepth 1 -type f -name '*.info' -print0)"
 
   # Generate shortcuts for all installed games
-  while IFS= read -r -d $'\0' game_dir; do
-    # Pull the game's name off the game directory
-    #display_name="$(basename "$game_dir")"
-
-    # Find the .mancpn file for the game which contains the ID info we need to build the launch command
-    local mancpn_file="$(find "$game_dir" -name '*.mancpn')"
-
-    # NOTE: We need to sript out all non printing characters except NEWLINE as these
-    #       files are DOS formatted
+  while IFS= read -r -d $'\0' item_file; do
+    # Get the Name of the game
+    local display_name="$(jq -r .DisplayName "$item_file")"
 
     # Get the NameSpace ID
-    local namespaceId=$(tr -cd '[:print:]\n' <"$mancpn_file" | grep '"CatalogNamespace": ' | tr -d '", \t' | cut -d ':' -f 2)
+    local namespaceId="$(jq -r .MainGameCatalogNamespace "$item_file")"
     #echo "name Id: $namespaceId"
 
     # Get the Catalog Item ID
-    local itemId=$(tr -cd '[:print:]\n' <"$mancpn_file" | grep '"CatalogItemId": ' | tr -d '", \t' | cut -d ':' -f 2)
+    local itemId="$(jq -r .MainGameCatalogItemId "$item_file")"
     #echo "item ID: $itemId"
 
     # Get the Artifact ID
-    local artifactId=$(tr -cd '[:print:]\n' <"$mancpn_file" | grep '"AppName": ' | tr -d '", \t' | cut -d ':' -f 2)
+    local artifactId="$(jq -r .MainGameAppName "$item_file")"
     #echo "art  ID: $artifactId"
-
-    # The easiest definitive location to get the display name is actually out of the
-    # install manifest at.  The probelm is there's no way to guess from the name or
-    # path which file is ours, so we need to grep for it based on the Catalog ID as that
-    # is likely globally unique across ALL items
-    local item_file="$(grep -H "\"MainGameCatalogItemId\": \"$itemId\"," "$egl_game_manifests/"*.item | cut -d ':' -f 1)"
     
-    # Now grab the dispaly name from the item file
-    local display_name="$(grep -m 1 '"DisplayName": ' "$item_file" | cut -d '"' -f 4)"
+    # Generate the cmd_opts
+    local cmd_opts="-com.epicgames.launcher://apps/$namespaceId%%3A$itemId%%3A$artifactId?action=launch&silent=true"
 
-    # Print out the info needed to assemble the shortcut
-    printf 'name       : %s\n' "$display_name"
-    printf 'target     : "%s"\n' "$egl_exe"
-    printf 'start in   : "%s"\n' "$egl_start_dir"
-    printf 'launch opts: STEAM_COMPAT_DATA_PATH="%s" %%command%% -com.epicgames.launcher://apps/%s%%3A%s%%3A%s?action=launch&silent=true\n' \
-      "$egl_comp_dir" "$namespaceId" "$itemId" "$artifactId"
-    
-    ## New generation method
-    #local cmd_opts="-com.epicgames.launcher://apps/$namespaceId%%3A$itemId%%3A$artifactId?action=launch&silent=true"
-    #generate_shortcut_data "$display_name" "$egl_exe" "$egl_start_dir" "$egl_comp_dir" "$cmd_opts"
+    # Generate the shortcut
+    generate_shortcut_data "$display_name" "$egl_exe" "$egl_start_dir" "$egl_comp_dir" "$cmd_opts"
     
     echo ""
-  done < <(find "$egl_game_info_dir" -mindepth 1 -maxdepth 1 -type d -print0)
+  done < <(find "$egl_game_manifests" -mindepth 1 -maxdepth 1 -type f -name '*.item' -print0)
 }
 
 generate_gog_data() {
@@ -219,26 +205,16 @@ generate_gog_data() {
     local info_file="$game_dir/goggame-$gameId.info"
     #echo "info file: $info_file"
 
-    ## No longer used
-    # Extract the gameID from the games .info file
-    #gameId="$(tr -cd '[:print:] \n' <"$info_file" | grep '"gameId":' | tr -d ' ",' | cut -d ':' -f 2)"
-
     # Extract the game name from the .info file
-    # This occurs multiple times in the file and we're lazy and don't want to add
-    # a JSON processor so just take the first hit
-    # NOTE: try grep -m 1 instead of head -n 1
-    local display_name="$(tr -cd '[:print:] \n' <"$info_file" | grep '"name":' | head -n 1 | cut -d '"' -f 4 | head -n 1)"
+    local display_name="$(jq -r .name "$info_file")"
     #echo "dispaly name: $display_name"
     #echo ""
-    
-    # Print out the shortcut data
-    printf 'name       : %s\n' "$display_name"
-    printf 'target     : "%s"\n' "$gog_exe"
-    printf 'start in   : "%s"\n' "$gog_start_dir"
-    printf 'launch opts: STEAM_COMPAT_DATA_PATH="%s" %%command%% /command=runGame /gameID=%s /path="%s" \n' "$gog_comp_dir" "$gameId" "$converted_dir"
-    ## New print method
-    #local cmd_opts="/command=runGame /gameID=$gameId /path=\"$converted_dir\""
-    #generate_shortcut_data "$display_name" "$gog_exe" "$gog_start_dir" "$gog_comp_dir" "$cmd_opts"
+
+    # Generate the command options
+    local cmd_opts="/command=runGame /gameID=$gameId /path=\"$converted_dir\""
+
+    # Generate the shortcut data
+    generate_shortcut_data "$display_name" "$gog_exe" "$gog_start_dir" "$gog_comp_dir" "$cmd_opts"
     echo ""
   done < <(find "$gog_games_dir" -mindepth 1 -maxdepth 1 -type d -print0)
   echo ""
@@ -256,8 +232,6 @@ generate_shortcut_data() { # name target start_dir compat_dir command_opts
   printf 'start in   : "%s"\n' "$start_dir"
   printf 'launch opts: STEAM_COMPAT_DATA_PATH="%s" %%command%% %s \n' "$compat_dir" "$command_opts"
   echo ""
-
-
 }
 
 work() {
