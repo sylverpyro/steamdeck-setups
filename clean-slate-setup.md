@@ -73,6 +73,7 @@ curl --output ~/Desktop/NonSteamLaunchers.desktop -Ls https://github.com/cchrkk/
 NOTE: I only apply some of the tweaks this author recommends.  I omit 
 * Silencing the Watchdog timer
 * Disabling CPU vulnrability mitigations (i.e. retbleed)
+
 Source: https://medium.com/@a.b.t./here-are-some-possibly-useful-tweaks-for-steamos-on-the-steam-deck-fcb6b571b577#6c57
 ```
 # Performance CPU govenor (SteamDeck default: schedutil)
@@ -106,6 +107,9 @@ ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="kyber"
 ACTION=="add|change", KERNEL=="sd[a-z]|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="kyber"
 EOF
 
-# Remove setting 'atime' (defulat: atime) (note: could use relatime)
+# Disable setting file access times 'atime' (defulat: atime)
+# (note: could use relatime if access times ever become importnat)
+# WARNING: Don't run this more than once as it will add multiple 'noatime'
+#          flags to the mount lines
 sudo sed -i -e '/home/s/\bdefaults\b/&,noatime/' /etc/fstab
 ```
