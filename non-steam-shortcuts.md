@@ -11,6 +11,7 @@
 NOTES
 * Even with properly created shortcuts, it's not possible to exit a game and have the EGL close automaticaly
   * To 'stop' the game in steam you'll need to manually close the EGL
+  * This is actually a semi-good thing as if the game has cloud saves implemented though EGL, the EGL needs time post-shutdown to sync the new save files
   * It theoreticaly would be possible to launch the game via a script then close the EGL once the game exits
 * To improve Gamepad supprot it's a good idea to disable the EGL-Overlay by renaming it's binaries
   * See below for how to do that
@@ -70,11 +71,15 @@ Steam Shortcut (SteamOS) For Hades:
 NOTES:
 * The %command% to launch a game will exit immediately but will still launch the game
 * Needs to be tested if it works as intended on SteamDeck
-* Ubisot Connect will not work without OS settings to allow MTU probing (see other readme)
+* Ubisot Connect will not work (or only work randmly) without OS settings to allow MTU probing 
+```
+sudo sysctl -w net.ipv4.tcp_mtu_probing=1
+echo net.ipv4.tcp_mtu_probing=1 | sudo tee /etc/sysctl.d/zzz-custom-mtu-probing.conf
+```
 
 List of UPlay app IDs: https://github.com/Haoose/UPLAY_GAME_ID  
-Launch command: `"C:\Program Files (x86)\Ubisoft\Ubisoft Game Launcher\Uplay.exe" "uplay://launch/410/0"  `
-Installed List: `C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\data  `
+Launch command: `"C:\Program Files (x86)\Ubisoft\Ubisoft Game Launcher\Uplay.exe" "uplay://launch/410/0"`
+Installed List: `C:\Program Files (x86)\Ubisof\Ubisoft Game Launcher\\data`
 * NOTE: Just contains folders for each game ID but there's no way to correlate the entries to a game without RegEdit
 
 Registrysearch: 
