@@ -17,6 +17,7 @@ defaults() {
   # egl_game_index="$egl_pfx/drive_c/ProgramData/Epic/EpicGamesLauncher/Data/Manifests/*.item"
   ## Each directory for each game has a .mancpn file with the required ID data
   # egl_game_index="drive_c/Program Files/Epic Games/*/.egstore/*.mancpn"
+  egl_game_manifests="$egl_pfx/drive_c/ProgramData/Epic/EpicGamesLauncher/Data/Manifests"
   egl_game_info_dir="$egl_pfx/drive_c/Program Files/Epic Games"
   egl_game_info_ext='.mancpn'
   egl_overlay="$egl_pfx/drive_c/Program Files (x86)/Epic Games/Launcher/Portal/Extras/Overlay/EOSOverlayRenderer-Win32-Shipping.exe"
@@ -75,7 +76,8 @@ generate_egl_data() {
 
   while IFS= read -r -d $'\0' game_dir; do
     # Pull the game's name off the game directory
-    display_name="$(basename "$game_dir")"
+    #display_name="$(basename "$game_dir")"
+
     # Find the .mancpn file for the game which contains the ID info we need to build the launch command
     mancpn_file="$(find "$game_dir" -name '*.mancpn')"
 
@@ -94,19 +96,84 @@ generate_egl_data() {
     artifactId=$(tr -cd '[:print:]\n' <"$mancpn_file" | grep '"AppName": ' | tr -d '", \t' | cut -d ':' -f 2)
     #echo "art  ID: $artifactId"
 
+    # The easiest definitive location to get the display name is actually out of the
+    # install manifest at.  The probelm is there's no way to guess from the name or
+    # path which file is ours, so we need to grep for it based on the Catalog ID as that
+    # is likely globally unique across ALL items
+    item_file="$(grep -H "\"MainGameCatalogItemId\": \"$itemId\"," "$egl_game_manifests/"*.item | cut -d ':' -f 1)"
+    # Now grab the dispaly name from the file
+    display_name="$(grep -m 1 '"DisplayName": ' "$item_file" | cut -d '"' -f 4)"
+
     # Print out the info needed to assemble the shortcut
     printf 'name       : %s\n' "$display_name"
     printf 'target     : "%s"\n' "$egl_exe"
     printf 'start in   : "%s"\n' "$egl_start_dir"
     printf 'launch opts: STEAM_COMPAT_DATA_PATH="%s" %%command%% -com.epicgames.launcher://apps/%s%%3A%s%%3A%s?action=launch&silent=true\n' \
       "$egl_comp_dir" "$namespaceId" "$itemId" "$artifactId"
-    #  "$egl_comp_dir" "$namespaceId" "$itemId" "$artifactId"
     echo ""
   done < <(find "$egl_game_info_dir" -mindepth 1 -maxdepth 1 -type d -print0)
 }
 
+generate_gog_data() {
+  #gog_comp_dir="$compdata_dir/GogGalaxyLauncher"
+  #gog_pfx="$gog_comp_dir/pfx"
+  #gog_start_dir="$gog_pfx/drive_c/Program Files (x86)/GOG Galaxy"
+  #gog_exe="$gog_pfx/drive_c/Program Files (x86)/GOG Galaxy/GalaxyClient.exe"
+  #gog_games_dir="$gog_pfx/drive_c/Program Files (x86)/GOG Galaxy/Games"
+
+  trim="$gog_pfx/drive_c/"
+
+  while IFS= read -r -d $'\0' game_dir; do
+    #echo "game dir: $game_dir"
+
+    # Convert the Linux install path to a Windows install path since we need to present
+    # this to a windows exe shortly in a wine pfx
+    full_install_dir="$(realpath --no-symlinks "$game_dir")"
+    #echo "full dir: $full_install_dir"
+    trimmed_install_dir="C:/${full_install_dir/$trim/}"
+    #echo "trimmed dir: $trimmed_install_dir"
+    converted_dir="${trimmed_install_dir//\//\\}"
+    #echo "Converted dir: $converted_dir"
+
+    # Some games have MULTIPLE .info files as each DLC get's a file
+    # e.g. Shovel Knight TT, Dead Cells + DLC
+    # To get the MAIN game ID we need to either check the .ico file
+    # OR scan for 'rootGameId' across all .info files
+    # choosing to go the former
+    icon_file="$(find "$game_dir" -maxdepth 1 -type f -name 'goggame-*.ico')"
+    #echo "icon file: $icon_file"
+
+    # Extract the ID from the ico file name
+    gameId="$(basename --suffix='.ico' "$icon_file" | cut -d '-' -f 2)"
+    #echo "gameid: $gameId"
+
+    # Get a handle for the game's .info file
+    info_file="$game_dir/goggame-$gameId.info"
+    #echo "info file: $info_file"
+
+    # Extract the gameID from the games .info file
+    #gameId="$(tr -cd '[:print:] \n' <"$info_file" | grep '"gameId":' | tr -d ' ",' | cut -d ':' -f 2)"
+
+    # Extract the game name from the .info file
+    # This occurs multiple times in the file and we're lazy and don't want to add
+    # a JSON processor so just take the first hit
+    # NOTE: try grep -m 1 instead of head -n 1
+    display_name="$(tr -cd '[:print:] \n' <"$info_file" | grep '"name":' | head -n 1 | cut -d '"' -f 4 | head -n 1)"
+    #echo "dispaly name: $display_name"
+    #echo ""
+    
+    printf 'name       : %s\n' "$display_name"
+    printf 'target     : "%s"\n' "$gog_exe"
+    printf 'start in   : "%s"\n' "$gog_start_dir"
+    printf 'launch opts: STEAM_COMPAT_DATA_PATH="%s" %%command%% /command=runGame /gameID=%s /path="%s" \n' "$gog_comp_dir" "$gameId" "$converted_dir"
+    echo ""
+  done < <(find "$gog_games_dir" -mindepth 1 -maxdepth 1 -type d -print0)
+  echo ""
+}
+
 work() {
   generate_egl_data
+  generate_gog_data
 }
 
 main() {
