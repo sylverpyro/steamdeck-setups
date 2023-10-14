@@ -1,4 +1,5 @@
 #!/bin/bash -
+set -o nounset
 
 # Author: sylverpyro <sylverpyro@users.noreply.github.com>
 # Report bugs, issues, and ideas at
@@ -103,8 +104,9 @@ defaults() {
   uc_comp_dir="$compdata_dir/UplayLauncher"
   uc_pfx="$uc_comp_dir/pfx"
   uc_start_dir="$uc_pfx/drive_c/Program Files (x86)/Ubisoft/Ubisoft Game Launcher"
-  uc_exe="$uc_comp_dir/drive_c/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/upc.exe"
+  uc_exe="$uc_pfx/drive_c/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/upc.exe"
   uc_games_dir="$uc_pfx/drive_c/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games"
+  uc_data_dir="$uc_pfx/drive_c/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/data"
 
   # Amazon Games
   amz_comp_dir="$compdata_dir/AmazonGamesLauncher"
@@ -220,6 +222,25 @@ generate_gog_data() {
   echo ""
 }
 
+# Ubisoft Connect/UPlay
+generate_uc_data() {
+
+  # Generate the launcher shortcut
+  generate_shortcut_data "Ubisoft Connect" "$uc_exe" "$uc_start_dir" "$uc_comp_dir" ""
+
+  #echo "data dirs: in $uc_data_dir"
+  #find "$uc_data_dir" -mindepth 1 -maxdepth 1 -type d -regex '.*/[0-9]+$'
+
+  while read -r -d $'\0' game_id_dir; do
+    uc_game_id="$(basename "$game_id_dir")"
+    # Right now we don't have a good way to translate this ID so just use it as the game name
+    uc_game_name=$uc_game_id
+    uc_game_launch_opts="uplay://launch/$uc_game_id/0"
+    generate_shortcut_data "$uc_game_name" "$uc_exe" "$uc_start_dir" "$uc_comp_dir" "$uc_game_launch_opts"
+  done < <(find "$uc_data_dir" -mindepth 1 -maxdepth 1 -type d -regex '.*/[0-9]+$' -print0)
+
+}
+
 # Generate shortcut data 
 generate_shortcut_data() { # name target start_dir compat_dir command_opts 
   local name="$1"
@@ -237,6 +258,7 @@ generate_shortcut_data() { # name target start_dir compat_dir command_opts
 work() {
   generate_egl_data
   generate_gog_data
+  generate_uc_data
 }
 
 main() {
